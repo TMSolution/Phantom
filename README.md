@@ -1,2 +1,2 @@
 # Phantom
-Bundle for testing new function. Sample Enitites in all possible relations. 
+Bundle for testing new functions. Sample Enitites in all possible relations. 
