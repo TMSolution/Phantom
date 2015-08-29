@@ -1,0 +1,3 @@
+phantom_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: PhantomBundle:Default:index }
