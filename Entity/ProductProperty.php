@@ -1,16 +1,27 @@
 <?php
+namespace PhantomBundle\Entity;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Description of ProductProperty
- *
- * @author Mariusz Piela <mariusz.piela@tmsolution.pl>
+ * @ORM\Entity
+ * @ORM\Table(name="phantom_product_property")
  */
 class ProductProperty {
-    //put your code here
+    
+     /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    protected $name;
+
+
+  
 }
+
