@@ -1,4 +1,23 @@
+parameters:
+        phantom.config.productcategory.parameters:
+         twig_container_read: 'PhantomBundle:ProductCategory\Container:read.html.twig'
+
 services:
-#    phantom.example:
-#        class: PhantomBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+
+  phantom.gridconfig.productcategory:
+        class: 'PhantomBundle\GridConfig\ProductCategory'
+        arguments: [@service_container]        
+        tags:
+            -  { name: prototype.gridbuilder, entity: 'PhantomBundle\Entity\ProductCategory' } 
+
+  phantom.gridconfig.product:
+        class: 'PhantomBundle\GridConfig\Product'
+        arguments: [@service_container]        
+        tags:
+            -  { name: prototype.gridbuilder, entity: 'PhantomBundle\Entity\Product' }             
+            
+  phantom.config.productcategory:
+        class: Core\PrototypeBundle\Service\Config
+        arguments: [@prototype.config,%phantom.config.productcategory.parameters%]        
+        tags:
+            -  { name: prototype.config, entity: 'PhantomBundle\Entity\ProductCategory'  }
