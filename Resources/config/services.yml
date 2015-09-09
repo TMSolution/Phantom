@@ -1,7 +1,10 @@
 parameters:
         phantom.config.productcategory.parameters:
          twig_container_read: 'PhantomBundle:ProductCategory\Container:read.html.twig'
-
+         
+        phantom.config.product.parameters:
+         twig_container_read: 'PhantomBundle:Product\Container:read.html.twig'
+         twig_base_index: 'CorePrototypeBundle:Association\Base:index.html.twig'
 services:
 
   phantom.gridconfig.productcategory:
@@ -21,3 +24,9 @@ services:
         arguments: [@prototype.config,%phantom.config.productcategory.parameters%]        
         tags:
             -  { name: prototype.config, entity: 'PhantomBundle\Entity\ProductCategory'  }
+            
+  phantom.config.product:
+        class: Core\PrototypeBundle\Service\Config
+        arguments: [@prototype.config,%phantom.config.product.parameters%]        
+        tags:
+            -  { name: prototype.config, route: core_prototype_ajaxcontroller_read, entity: 'PhantomBundle\Entity\Product'  }

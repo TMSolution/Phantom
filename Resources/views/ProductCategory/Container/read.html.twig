@@ -1,28 +1,94 @@
 {% extends config.get("twig_base_index") %}
 {% block content %}    
-<div>
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#productcategory-show-tab" aria-controls="productcategory-show-tab" role="tab" data-toggle="tab">{{ "productcategory"|trans }}</a></li>
-        <li role="presentation"  ><a class="lazy-loaded-tab" href="#productcategory-products-tab" aria-controls="productcategory-products-tab" role="tab" data-toggle="tab" data-route="core_prototype_associationcontroller_list.{{app.request.getLocale()}}" data-route-params='{ "parentName":"{{classmapperservice.getEntityName("PhantomBundle\\Entity\\ProductCategory")}}" , "parentId": "{{entity.id}}", "entityName": "{{classmapperservice.getEntityName("PhantomBundle\\Entity\\Product")}}" }'  data-route-target="" >{{ "products"|trans}}</a></li>
-      </ul>
 
-  <!-- Tab panes -->
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active tab-panel-container" id="productcategory-show-tab" > {% block element %}{% endblock %}</div>
-        <div role="tabpanel" class="tab-pane  tab-panel-container" id="productcategory-products-tab"  ></div>
-      </div>
+    <div>
 
-</div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a class="lazy-tab state" href="#kont-europa-tab" aria-controls="kont-europa-tab" role="tab" data-route="core_prototype_ajaxcontroller_read.{{app.request.getLocale()}}" data-route-params='{ "id": 2,"entityName": "{{classmapperservice.getEntityName("PhantomBundle\\Entity\\Product")}}" }' data-toggle="tab">europa</a></li>
+            <li role="presentation"  ><a class="lazy-tab  state" href="#kont-azja-tab" aria-controls="kont-azja-tab" role="tab" data-toggle="tab"  data-route="core_prototype_ajaxcontroller_read.{{app.request.getLocale()}}" data-route-params='{ "id": 1,"entityName": "{{classmapperservice.getEntityName("PhantomBundle\\Entity\\ProductCategory")}}" }' data-load-target="" >azja</a></li>
+        </ul>
+
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active tab-panel-container" id="kont-europa-tab" > {% block element %}{% endblock %}</div>
+            <div role="tabpanel" class="tab-pane  tab-panel-container" id="kont-azja-tab"  ></div>
+        </div>
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
 {% endblock content %}
 
 {% block js %}
-       {{ parent() }}
-        <script src="{{asset("bundles/coreprototype/js/lazyLoadedTab.js")}}"></script>
-        <script src="{{asset("bundles/coreprototype/js/lazyLoaded.js")}}"></script>
-        <script>
-            $().lazyLoader('basePath','aaaaaaaaaaaaaaaaa');
-            
-        </script>
+    {{ parent() }}
+    <!--<script src="{{asset("bundles/coreprototype/js/lazyLoadedTab.js")}}"></script>-->
+    <script src="{{asset("bundles/coreprototype/js/lazyLoader.js")}}"></script>
+    <script>
+
+
+
+        $().lazyLoader({'defaultContainer': '#test-div', 'defaultPath': window.location.href});
+
+
+
+        $(document).on('click', '.lazy-tab', function (e) {
+
+            var url = Routing.generate($(this).data("route"), $(this).data("route-params"));
+            $().lazyLoader('load', $(this).attr('href').substr(1), url, $(this).attr('href'),'replaceUrl');
+           
+            return false;
+
+        });
+
+
+        $(document).on('click', '.static-tab', function (e) {
+
+
+            var defaultPath = $().lazyLoader('defaultPath')
+            $().lazyLoader('replaceUrl', $(this).attr('href').substr(1), defaultPath, $(this).data("load-target"));
+
+            return false;
+
+        });
+
+
+        $(document).on('click', '.lazy', function (e) {
+            e.preventDefault();
+            $().lazyLoader('load', $(this).attr('id'), $(this).attr('href'), $(this).data("load-target"),'replaceUrl');
+            return false;
+
+        });
         
+        
+        $(document).on('click', '.state', function (e) {
+            e.preventDefault();
+            $().lazyLoader('replaceUrl', $(this).attr('href').substr(1), $(this).attr('href'), $(this).data("load-target"));
+            return false;
+
+        });
+        
+
+        window.onpopstate = function (event) {
+            console.debug(event.state);
+            if (event.state) {
+                console.debug(event.state);
+                $().lazyLoader('reload', event.state.url, event.state.target);
+            }
+            else {
+                window.location.reload();
+            }
+        };
+
+
+    </script>
+
 {% endblock %}
